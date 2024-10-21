@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Smart Manufacturing Dashboard</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Full viewport height */
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #007BFF; /* Blue background for the navbar */
+            padding: 20px 0; /* Increased padding to make the navbar taller */
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white; /* White font color for the navbar */
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1; /* Allow content to grow and take available space */
+        }
+
+        .slider {
+            position: relative;
+            max-width: 600px; /* Adjust the width as needed */
+            margin: 20px auto; /* Center the slider */
+            overflow: hidden; /* Hide overflow for smooth sliding */
+            border-radius: 10px; /* Optional: rounded corners */
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease; /* Smooth transition for sliding */
+        }
+
+        .slide {
+            min-width: 100%; /* Each slide takes full width of the slider */
+            transition: opacity 0.5s ease; /* Smooth transition for opacity */
+        }
+
+        footer {
+            background-color: #007BFF; /* Blue background for the footer */
+            color: white; /* White font color for footer text */
+            padding: 20px;
+            text-align: center;
+            margin-top: auto; /* Push the footer to the bottom */
+        }
+
+        footer ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        footer ul li {
+            margin: 0 10px;
+        }
+
+        footer ul li img {
+            width: 24px;
+            height: 24px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="login.php">Login</a></li>
+                <li><a href="register.php">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content">
+        <h1>Welcome to Our Smart Manufacturing Website</h1>
+
+        <div class="slider">
+            <div class="slides">
+                <img src="smart.jpg" alt="Image 1" class="slide">
+                <img src="smart2.jpeg" alt="Image 2" class="slide">
+                <img src="smart3.jpeg" alt="Image 3" class="slide">
+                <img src="smart4.jpeg" alt="Image 4" class="slide">
+            </div>
+        </div>
+
+        <p>Where innovation meets efficiency. Our platform enables factory managers, operators, and auditors to monitor, manage, and optimize factory operations with real-time insights and user-friendly features designed for Industry 4.0.</p>
+    </div>
+
+    <footer>
+        <ul class="social-media">
+            <li><a href="https://www.youtube.com" target="_blank"><img src="youtube.jpg" alt="YouTube"></a></li>
+            <li><a href="https://www.facebook.com" target="_blank"><img src="facebook.png" alt="Facebook"></a></li>
+            <li><a href="https://www.twitter.com" target="_blank"><img src="x.webp" alt="X"></a></li>
+            <li><a href="https://www.linkedin.com" target="_blank"><img src="linkedin.webp" alt="LinkedIn"></a></li>
+        </ul>
+        <p>Contact Us: info@smartdashboard.com | +123 456 789</p>
+        <p>&copy; 2024 Smart Manufacturing Dashboard. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let currentIndex = 0; // Current slide index
+        const slides = document.querySelectorAll('.slide'); // All slides
+        const totalSlides = slides.length; // Total number of slides
+
+        function showSlide(index) {
+            const slidesContainer = document.querySelector('.slides');
+            slidesContainer.style.transform = 'translateX(' + (-index * 100) + '%)';
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides; // Loop back to the first slide
+            showSlide(currentIndex);
+        }
+
+        // Automatically change slides every 3 seconds
+        setInterval(nextSlide, 3000);
+
+        // Initial display of the first slide
+        showSlide(currentIndex);
+    </script>
+</body>
+</html>
