@@ -51,8 +51,10 @@ if (isset($_POST['register_user'])) {
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
         <select name="role" required>
-            <option value="User">User</option>
-            <option value="Admin">Admin</option>
+            <option value="User">Administrator</option>
+            <option value="Admin">Factory Manager</option>
+            <option value="Admin">Production Operator</option>
+            <option value="Admin">Auditor</option>
         </select>
         <button type="submit" name="register_user">Register</button>
     </form>
