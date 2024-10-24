@@ -63,7 +63,7 @@ $machines = mysqli_fetch_all($result, MYSQLI_ASSOC);
             align-items: center;
             font-family: Arial, sans-serif;
         }
-        h2 {
+        h2, h3 {
             text-align: center;
         }
         form {
@@ -142,7 +142,7 @@ $machines = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="machine_table_body">
             <?php foreach ($machines as $machine): ?>
             <tr>
                 <td><?php echo $machine['id']; ?></td>
@@ -175,25 +175,142 @@ $machines = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <button type="submit" name="update_machine">Update Machine</button>
     </form>
 
+    <!-- Button to Load Factory Logs -->
+    <h3>Factory Logs</h3>
+    <button id="load_logs_button" onclick="loadFactoryLogs()">Load Factory Logs</button>
+    
+    <!-- Search Functionality -->
+    <input type="text" id="search_input" placeholder="Search by Machine Name" onkeyup="filterLogs()">
+    <button id="search_button" onclick="filterLogs()">Search</button>
+    
+    <!-- Table to Display CSV Data -->
+    <table id="factory_logs_table" style="display:none;">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Machine Name</th>
+                <th>Temperature</th>
+                <th>Pressure</th>
+                <th>Vibration</th>
+                <th>Humidity</th>
+                <th>Power Consumption</th>
+                <th>Operational Status</th>
+                <th>Error Code</th>
+                <th>Production Count</th>
+                <th>Maintenance Log</th>
+                <th>Speed</th>
+            </tr>
+        </thead>
+        <tbody id="logs_table_body">
+        </tbody>
+    </table>
+
+    <div id="pagination" style="display:none;">
+        <button onclick="previousPage()">Previous</button>
+        <button onclick="nextPage()">Next</button>
+    </div>
+
     <footer>
-            <ul class="social-media">
-                <li><a href="https://www.youtube.com" target="_blank"><img src="youtube.jpg" alt="YouTube"></a></li>
-                <li><a href="https://www.facebook.com" target="_blank"><img src="facebook.png" alt="Facebook"></a></li>
-                <li><a href="https://www.twitter.com" target="_blank"><img src="x.webp" alt="X"></a></li>
-                <li><a href="https://www.linkedin.com" target="_blank"><img src="linkedin.webp" alt="LinkedIn"></a></li>
-            </ul>
-            <p>Contact Us: info@smartdashboard.com | +123 456 789</p>
-            <p>&copy; 2024 Smart Manufacturing Dashboard. All rights reserved.</p>
-        </footer>
+        <ul class="social-media">
+            <li><a href="https://www.youtube.com" target="_blank"><img src="youtube.jpg" alt="YouTube"></a></li>
+            <li><a href="https://www.facebook.com" target="_blank"><img src="facebook.png" alt="Facebook"></a></li>
+            <li><a href="https://www.twitter.com" target="_blank"><img src="x.webp" alt="X"></a></li>
+            <li><a href="https://www.linkedin.com" target="_blank"><img src="linkedin.webp" alt="LinkedIn"></a></li>
+        </ul>
+        <p>Contact Us: info@smartdashboard.com | +123 456 789</p>
+        <p>&copy; 2024 Smart Manufacturing Dashboard. All rights reserved.</p>
+    </footer>
 
     <script>
-        // Function to populate the update form with existing machine data
-        function populateUpdateForm(id, machineName, machineDescription, status) {
+        let csvData = [];
+        let currentPage = 0;
+        const rowsPerPage = 20;
+
+        // Function to load CSV data
+        function loadFactoryLogs() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'factory_logs.csv', true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    csvData = xhr.responseText.split("\n").slice(1).filter(row => row.trim() !== ""); // Skip header row and empty rows
+                    currentPage = 0; // Reset page
+                    displayLogs();
+                    document.getElementById('factory_logs_table').style.display = "table";
+                    document.getElementById('pagination').style.display = "block";
+                }
+            };
+            xhr.send();
+        }
+
+        // Function to display logs
+        function displayLogs() {
+            const start = currentPage * rowsPerPage;
+            const end = start + rowsPerPage;
+            const logsToDisplay = csvData.slice(start, end);
+            const tableBody = document.getElementById('logs_table_body');
+            tableBody.innerHTML = ''; // Clear previous rows
+
+            logsToDisplay.forEach(log => {
+                const cols = log.split(","); // Assuming comma as delimiter
+                const row = tableBody.insertRow();
+                cols.forEach(col => {
+                    const cell = row.insertCell();
+                    cell.textContent = col; // Populate the cells
+                });
+            });
+        }
+
+        // Function for next page
+        function nextPage() {
+            if ((currentPage + 1) * rowsPerPage < csvData.length) {
+                currentPage++;
+                displayLogs();
+            }
+        }
+
+        // Function for previous page
+        function previousPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                displayLogs();
+            }
+        }
+
+        // Function to populate the update form
+        function populateUpdateForm(id, name, description, status) {
             document.getElementById('machine_id').value = id;
-            document.getElementById('machine_name').value = machineName;
-            document.getElementById('machine_description').value = machineDescription;
+            document.getElementById('machine_name').value = name;
+            document.getElementById('machine_description').value = description;
             document.getElementById('status').value = status;
         }
+
+        // Function to filter logs by machine name
+        function filterLogs() {
+            const input = document.getElementById('search_input').value.toLowerCase();
+            const filteredLogs = csvData.filter(log => {
+                const cols = log.split(",");
+                return cols[1] && cols[1].toLowerCase().includes(input); // Assuming machine name is in the second column
+            });
+            const start = currentPage * rowsPerPage;
+            const end = start + rowsPerPage;
+            const logsToDisplay = filteredLogs.slice(start, end);
+            const tableBody = document.getElementById('logs_table_body');
+            tableBody.innerHTML = ''; // Clear previous rows
+
+            logsToDisplay.forEach(log => {
+                const cols = log.split(","); // Assuming comma as delimiter
+                const row = tableBody.insertRow();
+                cols.forEach(col => {
+                    const cell = row.insertCell();
+                    cell.textContent = col; // Populate the cells
+                });
+            });
+        }
+
+        // Load factory logs on page load
+        window.onload = function() {
+            loadFactoryLogs();
+        };
     </script>
 </body>
 </html>
