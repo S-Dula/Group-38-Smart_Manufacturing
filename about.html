@@ -5,16 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Smart Manufacturing Dashboard</title>
     <style>
-        /* General reset and body styling */
-        body {
+        /* General Styles */
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Styling the navbar */
-        nav {
-            background-color: #007BFF; /* Blue background */
-            padding: 20px; /* Increased padding for height */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Full viewport height */
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #007BFF; /* Blue background for the navbar */
+            padding: 20px 0; /* Increased padding to make the navbar taller */
         }
 
         nav ul {
@@ -22,59 +30,75 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
         }
 
         nav ul li {
-            display: inline;
+            margin: 0 15px;
         }
 
         nav ul li a {
-            color: white; /* White font color */
+            color: white; /* White font color for the navbar */
             text-decoration: none;
             font-size: 18px;
             font-weight: bold;
         }
 
         nav ul li a:hover {
-            color: #FFD700; /* Gold color on hover */
+            text-decoration: underline;
         }
 
-        /* Content styling */
         .content {
             padding: 20px;
             text-align: center;
+            flex-grow: 1; /* Allow content to grow and take available space */
         }
 
-        /* Footer styling */
+        .slider {
+            position: relative;
+            max-width: 600px; /* Adjust the width as needed */
+            margin: 20px auto; /* Center the slider */
+            overflow: hidden; /* Hide overflow for smooth sliding */
+            border-radius: 10px; /* Optional: rounded corners */
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease; /* Smooth transition for sliding */
+        }
+
+        .slide {
+            min-width: 100%; /* Each slide takes full width of the slider */
+            transition: opacity 0.5s ease; /* Smooth transition for opacity */
+        }
+
         footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
+            background-color: #007BFF; /* Blue background for the footer */
+            color: white; /* White font color for footer text */
             padding: 20px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            text-align: center;
+            margin-top: auto; /* Push the footer to the bottom */
         }
 
         footer ul {
             list-style-type: none;
             padding: 0;
-            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
         }
 
         footer ul li {
-            display: inline;
-            margin-right: 10px;
+            margin: 0 10px;
         }
 
-        footer ul li a img {
-            width: 32px; /* Set the icon width */
-            height: 32px; /* Set the icon height */
+        footer ul li img {
+            width: 24px;
+            height: 24px;
         }
 
-        footer ul li:last-child {
-            margin-right: 0; /* Remove margin for the last icon */
+        footer p {
+            margin: 5px 0;
         }
     </style>
 </head>
